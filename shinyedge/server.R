@@ -17,9 +17,17 @@ library(clues)
 library(igraph)
 library(edgebundleR)
 
-data = "dataset/example.xlsx"
-df = read_excel(data) 
-genes = df[, sapply(df,is.numeric)] %>% sapply(as.character)
+# Specified Dataset 
+data = "dataset/example.xlsx" 
+
+# Read the Data 
+df = read_excel(data)
+
+# Extract Numeric Pairs 
+genes = df[, sapply(df,is.character)] %>% sapply(as.character)
+
+# MAKE SURE IT CAN TAKE ALL KINDS OF INPUT (2 COLUMNS)
+
 unique_genes = genes %>% c %>% unlist %>% unique
 mat_rows = nrow(genes)
 
