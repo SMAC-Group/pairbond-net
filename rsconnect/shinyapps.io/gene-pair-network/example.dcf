@@ -1,0 +1,10 @@
+name: example
+title: example
+account: gene-pair-network
+server: shinyapps.io
+appId: 163054
+bundleId: 743303
+url: https://gene-pair-network.shinyapps.io/example/
+when: 1489303562.3659
+asMultiple: FALSE
+asStatic: FALSE
