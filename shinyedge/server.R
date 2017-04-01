@@ -18,15 +18,23 @@ library(igraph)
 library(edgebundleR)
 
 # Specified Dataset 
-data = "dataset/example.xlsx" 
+path = "dataset/example.xlsx" 
 
-# Read the Data 
-df = read_excel(data)
+read_file = function(path, columns = c(1,2)){
+  df = read_excel(path)[,columns]
+  genes = df %>% sapply(trimws)
+  return(genes)
+}
 
 # Extract Numeric Pairs 
-genes = df[, sapply(df,is.character)] %>% sapply(as.character)
+genes = read_file(path, c(2,4))
 
 # MAKE SURE IT CAN TAKE ALL KINDS OF INPUT (2 COLUMNS)
+new = abbreviate(genes)
+names(new) = NULL
+genes = matrix(new, ncol = 2)
+
+
 
 unique_genes = genes %>% c %>% unlist %>% unique
 mat_rows = nrow(genes)
@@ -49,7 +57,7 @@ adj_mat_dist = as.dist(dissimilarity)
 adj_mat_hclust = hclust(adj_mat_dist)
 
 # Manually choose number of clusters                           
-locations = cutree(adj_mat_hclust, k=3)      
+locations = cutree(adj_mat_hclust, k=2)      
 
 # Create object that makes igraph structure 
 obj = structure(list(ID = unique_genes, 
@@ -87,3 +95,5 @@ shinyServer(function(input, output) {
     })
     
 })
+
+
