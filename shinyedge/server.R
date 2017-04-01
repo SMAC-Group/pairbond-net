@@ -18,7 +18,8 @@ library(igraph)
 library(edgebundleR)
 
 # Specified Dataset 
-path = "dataset/example.xlsx" 
+path = "dataset/clean_small.xlsx"
+name_path = "dataset/names.xlsx"
 
 read_file = function(path, columns = c(1,2)){
   df = read_excel(path)[,columns]
@@ -27,17 +28,21 @@ read_file = function(path, columns = c(1,2)){
 }
 
 # Extract Numeric Pairs 
-genes = read_file(path, c(2,4))
+gene_file = read_file(path, c(1,2)) %>% na.omit 
+genes = apply(gene_file, 2, function(x) gsub("[^0-9]", "", x))
 
-# MAKE SURE IT CAN TAKE ALL KINDS OF INPUT (2 COLUMNS)
-new = abbreviate(genes)
-names(new) = NULL
-genes = matrix(new, ncol = 2)
+# Get Gene File and Names
+gene_file = read_file(name_path) %>% na.omit 
+gene_names = gene_file[,2] %>% gsub(" |EN.*", "", .)
+names(gene_names) = gene_file[,1]
 
+# Replace Numbers with the Gene Names
+genes = apply(genes, 2, function(x) gene_names[x])
 
-
+# Get Unique Genes 
 unique_genes = genes %>% c %>% unlist %>% unique
 mat_rows = nrow(genes)
+
 
 # Initialize Adjacency Matrix 
 n = length(unique_genes)
