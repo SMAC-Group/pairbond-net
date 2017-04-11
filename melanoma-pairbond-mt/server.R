@@ -88,6 +88,18 @@ shinyServer(function(input, output) {
        g = graph.data.frame(rel, directed = F, vertices = obj)
        V(g)$size = centralization.degree(g)$res
        
+       # Fix wrongly clustered elements 
+       deg_1 = V(g)[centralization.degree(g)$res==1]
+       all_adj = adjacent_vertices(g, V(g))
+       deg_1_idx = which(centralization.degree(g)$res==1)
+       deg_1_vertex = all_adj[deg_1_idx]
+       
+       a = sapply(deg_1_vertex, function(x) gsub("\\..*", "", x$name))
+       
+       for (i in seq_along(deg_1_idx)){
+         g = set.vertex.attribute(g, "name", index = deg_1_idx[i], value = gsub("^[0-9]{1}", a[i], names(a)[i]))
+       }
+       
        # First order them by the number of clusters 
        vecs = names(V(g))
        gsub("\\..*","",vecs) %>% as.numeric %>% order -> move
