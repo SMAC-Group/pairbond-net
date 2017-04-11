@@ -138,6 +138,5 @@ for (i in seq_along(vecs)){
   g = set.vertex.attribute(g, "name", index = seq_along(vecs)[i], value = gsub("^[0-9]{1}", 1, names(V(g)[i])))
 }
 
-E(g)$weight <- edge.betweenness(g)
 
 edgebundle(g, tension = tension, fontsize = 14)

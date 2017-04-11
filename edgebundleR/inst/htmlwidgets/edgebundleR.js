@@ -28,8 +28,7 @@ HTMLWidgets.widget({
     var splines = [];
 
     var cluster = d3.layout.cluster()
-                  .size([360, ry-xin.padding])
-                  .sort(function(a, b) { return d3.ascending(a.key, b.key); });
+                  .size([360, ry-xin.padding]);
 
     var bundle = d3.layout.bundle();
     var line = d3.svg.line.radial()
